@@ -12,9 +12,9 @@ export const createOrder = (orderData) => {
                 }
             })
 
-           /* if(data.payment_url){
+            if(data.payment_url){
                 window.location.href = data.payment_url;
-            }*/
+            }
 
             console.log("Order created",data)
             dispatch({type:CREATE_ORDER_SUCCESS, payload:data})
