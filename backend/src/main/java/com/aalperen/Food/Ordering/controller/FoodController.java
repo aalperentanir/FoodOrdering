@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/foods")
+@RequestMapping("/api")
 public class FoodController {
 
     @Autowired
@@ -50,9 +50,9 @@ public class FoodController {
 
     @GetMapping("/foods/restaurant/{restaurantId}")
     public ResponseEntity<List<Food>> getRestaurantFoods(@PathVariable Long restaurantId,
-                                                 @RequestParam boolean isVegetarian,
-                                                 @RequestParam boolean isNonVegetarian,
-                                                 @RequestParam boolean isSeasonal,
+                                                 @RequestParam (required = false)boolean isVegetarian,
+                                                 @RequestParam (required = false)boolean isNonVegetarian,
+                                                 @RequestParam (required = false)boolean isSeasonal,
                                                  @RequestParam(required = false) String foodCategory,
                                                  @RequestHeader("Authorization") String jwt) throws Exception {
 

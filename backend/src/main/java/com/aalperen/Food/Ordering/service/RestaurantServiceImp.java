@@ -69,6 +69,9 @@ public class RestaurantServiceImp implements RestaurantService {
             restaurant.setContactInformation(updatedRestaurant.getContactInformation());
         }
 
+            restaurant.setOpen(updatedRestaurant.isOpen());
+
+
         if (restaurant.getName() != null){
             restaurant.setName(updatedRestaurant.getName());
         }
