@@ -1,6 +1,6 @@
 
 import { api } from "../../Config/api";
-import { CREATE_INGREDIENT_CATEGORY_FAILURE, CREATE_INGREDIENT_CATEGORY_REQUEST, CREATE_INGREDIENT_CATEGORY_SUCCESS, GET_INGREDIENT_CATEGORY_FAILURE, GET_INGREDIENT_CATEGORY_REQUEST, GET_INGREDIENT_CATEGORY_SUCCESS, GET_INGREDIENTS, UPDATE_STOCK } from "./actionType";
+import { CREATE_INGREDIENT_CATEGORY_FAILURE, CREATE_INGREDIENT_CATEGORY_REQUEST, CREATE_INGREDIENT_CATEGORY_SUCCESS, CREATE_INGREDIENT_FAILURE, CREATE_INGREDIENT_REQUEST, CREATE_INGREDIENT_SUCCESS, GET_INGREDIENT_CATEGORY_FAILURE, GET_INGREDIENT_CATEGORY_REQUEST, GET_INGREDIENT_CATEGORY_SUCCESS, GET_INGREDIENTS, UPDATE_STOCK } from "./actionType";
 
 export const getIngredientOfRestaurant =({id, token}) => {
     return async(dispatch) => {
@@ -76,18 +76,18 @@ export const getIngredientCategory =({id, token}) => {
     }
 }
 
-export const updateStock =({id, token}) => {
+export const updateStockOfIngredients =({id, token}) => {
     return async(dispatch) => {
         
         try {
 
-            const {res} = await api.put(`/api/admin/ingredients/${id}/stock`,{
+            const {data} = await api.put(`/api/admin/ingredients/${id}/stock`,{},{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
             })
-            console.log("updateStock ",res)
-            dispatch({type:UPDATE_STOCK, payload:res})
+            console.log("updateStock ",data)
+            dispatch({type:UPDATE_STOCK, payload:data})
         } catch (error) {
             console.log(error)
         }

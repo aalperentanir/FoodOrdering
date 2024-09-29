@@ -9,6 +9,9 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from "@mui/icons-material/Close";
+import { uploadImageToCloudinary } from "../Util/UploadToCloudinary";
+import { useDispatch } from "react-redux";
+import { createRestaurant } from "../../Components/State/Restaurant/action";
 
 const initialValues = {
   name: "",
@@ -19,7 +22,7 @@ const initialValues = {
   country: "",
   postalCode: "",
   email: "",
-  mobile: "",
+  phone: "",
   twitter: "",
   instagram: "",
   openingHours: "Mon - Sun: 9:00 AM - 9:00 PM",
@@ -27,7 +30,38 @@ const initialValues = {
 };
 export const CreateRestaurantForm = () => {
   const [uploadImage, setUploadImage] = useState(false);
-  const handleImageChange = (e) => {};
+
+  const dispatch = useDispatch()
+  const jwt = localStorage.getItem("token")
+
+ /* const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    setUploadImage(true);
+    const image =await uploadImageToCloudinary(file);
+    formik.setFieldValue("images", [...formik.values.images, image]);
+    setUploadImage(false)
+  };*/
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return; // Eğer dosya seçilmezse çık
+    e.target.value = ""; // Input'u sıfırla
+  
+    setUploadImage(true); // Yükleme işlemini başlat
+  
+    try {
+      const image = await uploadImageToCloudinary(file);
+      
+      // Resim başarıyla yüklendikten sonra formik içindeki images alanını güncelle
+      formik.setFieldValue("images", [...formik.values.images, image]);
+    } catch (error) {
+      console.error("Resim yükleme hatası:", error);
+    }
+  
+    setUploadImage(false); // Yükleme işlemi tamamlandı
+  };
+  
+
   const formik = useFormik({
     initialValues,
     onSubmit: (values) => {
@@ -44,19 +78,25 @@ export const CreateRestaurantForm = () => {
 
         contactInformation: {
           email: values.email,
-          mobile: values.mobile,
+          phone: values.phone,
           twitter: values.twitter,
           instagram: values.instagram,
         },
         openingHours: values.openingHours,
         images: values.images,
       };
-      console.log("DATA",data)
-    },
+      console.log("data:  ", data);
 
+      dispatch(createRestaurant({data, token:jwt}))
+    },
   });
 
-  const handleRemoveImage = (index) => {};
+  const handleRemoveImage = (index) => {
+    const updatedImages = [...formik.values.images];
+    updatedImages.splice(index, 1); // splice ile elemanı diziden kaldır
+    formik.setFieldValue("images", updatedImages); // formik'e güncellenmiş diziyi set et
+  };
+  
   return (
     <div className="py-10 px-5 lg:flex items-center justify-center min-h-screen">
       <div className="lg:max-w-4xl">
@@ -86,12 +126,12 @@ export const CreateRestaurantForm = () => {
               </label>
 
               <div className="flex flex-wrap gap-2">
-                {[1, 1].map((image, index) => (
+                {formik.values.images.map((image, index) => (
                   <div className="relative">
                     <img
                       className="w-24 h-24 object-cover"
                       key={index}
-                      src="https://cdn.pixabay.com/photo/2024/08/30/22/55/ai-generated-9010113_640.jpg"
+                      src={image}
                       alt=""
                     />
                     <IconButton
@@ -221,12 +261,12 @@ export const CreateRestaurantForm = () => {
             <Grid item xs={6}>
               <TextField
                 fullWidth
-                id="mobile"
-                name="mobile"
-                label="Mobile"
+                id="phone"
+                name="phone"
+                label="Phone"
                 variant="outlined"
                 onChange={formik.handleChange}
-                value={formik.values.mobile}
+                value={formik.values.phone}
               ></TextField>
             </Grid>
 

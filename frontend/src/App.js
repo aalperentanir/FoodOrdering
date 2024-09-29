@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile } from "./Components/State/Auth/Action";
 import { findCard } from "./Components/State/Card/action";
 import {Routers} from "./Routes/Routers"
+import { getRestaurantByUserId } from "./Components/State/Restaurant/action";
 
 
 function App() {
@@ -16,6 +17,11 @@ function App() {
     dispatch(getUserProfile(auth.token || jwt));
     dispatch(findCard(jwt))
   },[auth.token])
+
+  useEffect(()=>{
+    dispatch(getRestaurantByUserId(auth.token || jwt));
+    
+  },[auth.user])
   return (
     <div>
       <ThemeProvider theme={darkTheme}>

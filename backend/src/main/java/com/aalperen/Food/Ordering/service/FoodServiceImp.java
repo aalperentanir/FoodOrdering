@@ -77,6 +77,13 @@ public class FoodServiceImp implements FoodService {
         return foods;
     }
 
+    @Override
+    public List<Food> getRestaurantFoodsByRestaurantId(Long restaurantId) {
+        List<Food> foods = foodRepository.findByRestaurantId(restaurantId);
+
+        return foods;
+    }
+
     private List<Food> filterByCategory(List<Food> foods, String foodCategory) {
         return foods.stream().filter(food -> {
             if (food.getCategory() != null) {

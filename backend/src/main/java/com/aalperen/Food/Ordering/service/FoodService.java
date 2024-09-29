@@ -15,6 +15,7 @@ public interface FoodService {
 
     List<Food> getRestaurantFoods(Long restaurantId, boolean isVegetarian,boolean isNonVegetarian, boolean isSeasonal, String foodCategory);
 
+    List<Food> getRestaurantFoodsByRestaurantId(Long restaurantId);
 
     List<Food> searchFood(String keyword);
 

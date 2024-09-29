@@ -10,24 +10,37 @@ import React from "react";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import XIcon from "@mui/icons-material/X";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import { useDispatch, useSelector } from "react-redux";
+import { updateRestaurantStatus } from "../../Components/State/Restaurant/action";
 export const RestaurantDetails = () => {
-  const handleRestaurantStatus = () => {};
+  const { restaurant } = useSelector((store) => store);
+
+  const dispatch = useDispatch();
+  
+  const handleRestaurantStatus = () => {
+    dispatch(
+      updateRestaurantStatus({
+        restaurantId: restaurant.usersRestaurant.id,
+        token: localStorage.getItem("token"),
+      })
+    );
+  };
   return (
     <div className="lg:px-20 px-5">
       <div className="py-5 flex justify-center items-center gap-5">
         <h1 className="text-2xl lg:text-7xl text-center font-bold p-5">
-          Tanir's Restaurant
+          {restaurant.usersRestaurant?.name}
         </h1>
 
         <div>
           <Button
-            color={true ? "primary" : "error"}
+            color={!restaurant.usersRestaurant?.open ? "primary" : "error"}
             size="large"
             className="py-[1rem] px-[2rem]"
             variant="contained"
             onClick={handleRestaurantStatus}
           >
-            {true ? "close" : "open"}
+            {restaurant.usersRestaurant?.open ? "close" : "open"}
           </Button>
         </div>
       </div>
@@ -44,7 +57,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Owner</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Ali Alperen TANIR
+                    {restaurant.usersRestaurant?.owner.fullName}
                   </p>
                 </div>
 
@@ -52,7 +65,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Food Type</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Turkish Food
+                    {restaurant.usersRestaurant?.foodType}
                   </p>
                 </div>
 
@@ -60,7 +73,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Opening Hours</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Mon-Sun: 9:00 AM - 9:00 PM
+                    {restaurant.usersRestaurant?.openingHours}
                   </p>
                 </div>
 
@@ -68,7 +81,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Status</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    {true ? (
+                    {restaurant.usersRestaurant?.open ? (
                       <span className="px-5 py-2 rounded-full bg-green-400 text-gray-900">
                         Open
                       </span>
@@ -95,7 +108,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Country</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Turkey
+                    {restaurant.usersRestaurant?.address.country}
                   </p>
                 </div>
 
@@ -103,7 +116,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">City</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Istanbul
+                    {restaurant.usersRestaurant?.address.city}
                   </p>
                 </div>
 
@@ -111,7 +124,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Postal Code</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    01771
+                    {restaurant.usersRestaurant?.address.postalCode}
                   </p>
                 </div>
 
@@ -119,7 +132,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Street</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    Street 1
+                    {restaurant.usersRestaurant?.address.street}
                   </p>
                 </div>
               </div>
@@ -138,7 +151,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Email</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    alialperentanir@gmail.com
+                    {restaurant.usersRestaurant?.contactInformation?.email}
                   </p>
                 </div>
 
@@ -146,7 +159,7 @@ export const RestaurantDetails = () => {
                   <p className="w-48">Mobile</p>
                   <p className="text-gray-400">
                     <span className="pr-5">-</span>
-                    +905555555555
+                    {restaurant.usersRestaurant?.contactInformation?.phone}
                   </p>
                 </div>
 
@@ -155,10 +168,19 @@ export const RestaurantDetails = () => {
                   <p className="text-gray-400">
                     <div className="flex text-gray-400 items-center pb-3 gap-2">
                       <span className="pr-5">-</span>
-                      <a href="/">
+                      <a
+                        href={
+                          restaurant.usersRestaurant.contactInformation
+                            ?.instagram
+                        }
+                      >
                         <InstagramIcon sx={{ fontSize: "3rem" }} />
                       </a>
-                      <a href="/">
+                      <a
+                        href={
+                          restaurant.usersRestaurant.contactInformation?.twitter
+                        }
+                      >
                         <XIcon sx={{ fontSize: "3rem" }} />
                       </a>
 

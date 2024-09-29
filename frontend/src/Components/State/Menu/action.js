@@ -6,7 +6,7 @@ export const createMenuItem = ({menu,token}) => {
         dispatch({type:CREATE_MENU_ITEM_SUCCESS})
 
         try {
-            const {data} = await api.post("/api/admin/food",menu,{
+            const {data} = await api.post("/api/admin/foods",menu,{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }
@@ -36,6 +36,29 @@ export const getMenuItemsByRestaurantId = (reqData) => {
 
 
             console.log("Menu items", data)
+            dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, payload:data})
+        } catch (error) {
+            console.log(error);
+            dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_FAILURE, payload:error})
+            
+        }
+    }
+}
+
+export const findMenuItemsByRestaurantId = (reqData) => {
+    return async (dispatch) => {
+        dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_REQUEST})
+        
+
+        try {
+            const {data} = await api.get(`/api/foods/restaurant-id/${reqData.restaurantId}`,{
+                headers:{
+                    Authorization:`Bearer ${reqData.token}`
+                }
+            })
+
+
+            console.log("Menu items by restaurantId", data)
             dispatch({type:GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS, payload:data})
         } catch (error) {
             console.log(error);
@@ -113,7 +136,7 @@ export const deleteFood = ({foodId, token}) => {
         dispatch({type:DELETE_MENU_ITEM_REQUEST})
 
         try {
-            const {data} = await api.delete(`/api/admin/food/${foodId}`,{
+            const {data} = await api.delete(`/api/admin/foods/${foodId}`,{
                 headers:{
                     Authorization:`Bearer ${token}`
                 }

@@ -9,7 +9,7 @@ const initialState = {
 
 const restaurantOrderReducer = (state = initialState, action)=> {
 
-    switch (action.payload) {
+    switch (action.type) {
         case GET_RESTAURANTS_ORDER_REQUEST:
         case UPDATE_ORDER_STATUS_REQUEST:
             return { ...state, loading:false, error:null }
